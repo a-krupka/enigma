@@ -16,6 +16,23 @@ import string
 
 #for j,i in zip(range(26),string.ascii_uppercase):
 #       print(f'"{i}":{j},')
+plug_dict = {}
+while True:
+       a = input("Enter letters to plugboard in format 'xx' to exit press X: ").capitalize()
+       if a == "x".upper():
+              break
+       if len(a) == 2:
+              a = list(a.upper())
+              b,c = a
+              if (b and c) in string.ascii_letters and b!=c:
+                     plug_dict[b] = c
+
+print(plug_dict)
+inv_plug_dict = {}
+for keys,values in plug_dict.items():
+       inv_plug_dict[values] = keys
+print(inv_plug_dict)
+
 
 rotor1 = rotor1
 rotor2 = rotor2
@@ -60,8 +77,12 @@ def plusone(number):
 #print(position("R",pozice))
 
 decyphered = ""
-text = "saskonaut" #Tohle je zkouska"
+text = "ybkak mfmeu c" #Tohle je zkouska"
 for i in text.upper().replace(" ",""):
+       if i in plug_dict:
+              i = plug_dict[i]
+       elif i in inv_plug_dict:           # Plugboard goes both ways
+              i = inv_plug_dict[i]
        pozice_P = plusone(pozice_P)
        if rotor1[pozice_P][1] != "":
               pozice_M = plusone(pozice_M)
@@ -87,6 +108,10 @@ for i in text.upper().replace(" ",""):
        rot5 = position(rot5,pozice_P)
        rot6 = inv_rotor1[inv_rotor1_keys.index(rot5)][0][rot5]
        rot6 = inverted_position(rot6,pozice_P)
+       if rot6 in plug_dict:
+              rot6 = plug_dict[rot6]
+       elif rot6 in inv_plug_dict:
+              rot6 = inv_plug_dict[rot6]
        decyphered += rot6
        #print(rot6)
        #print(rot1,rot2,rot3,reflector,rot4,rot5,rot6,sep="\n")
